@@ -51,24 +51,33 @@ if args.local:
     path_priv_flakes     = path_root.parent / 'system-config-priv' / 'flakes'
     path_priv_hm_modules = path_root.parent / 'system-config-priv' / 'hm-modules'
 
-    assert path_pub_flakes.exists()
-    assert path_priv_flakes.exists()
-    assert path_pub_hm_modules.exists()
-    assert path_priv_hm_modules.exists()
+    if not path_pub_flakes.exists():
+        print(f'WARNING: {path_pub_flakes} does not exist')
+    if not path_pub_hm_modules.exists():
+        print(f'WARNING: {path_pub_hm_modules} does not exist')
+    if not path_priv_flakes.exists():
+        print(f'WARNING: {path_priv_flakes} does not exist')
+    if not path_priv_hm_modules.exists():
+        print(f'WARNING: {path_priv_hm_modules} does not exist')
+
 
     nixargs = []
     
-    # Local public flakes 
-    for flake in path_pub_flakes.iterdir():
-        if flake.is_dir():
-            nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
-    nixargs.append(f'--override-input global-config/system-config-pub-hm-modules path:{path_pub_hm_modules}')
+    # Local public flakes
+    if path_pub_flakes.exists():
+        for flake in path_pub_flakes.iterdir():
+            if flake.is_dir():
+                nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
+    if path_pub_hm_modules.exists():
+        nixargs.append(f'--override-input global-config/system-config-pub-hm-modules path:{path_pub_hm_modules}')
 
     # Local private flakes
-    for flake in path_priv_flakes.iterdir():
-        if flake.is_dir():
-            nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
-    nixargs.append(f'--override-input global-config/system-config-priv-hm-modules path:{path_priv_hm_modules}')
+    if path_priv_flakes.exists():
+        for flake in path_priv_flakes.iterdir():
+            if flake.is_dir():
+                nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
+    if path_priv_hm_modules.exists():
+        nixargs.append(f'--override-input global-config/system-config-priv-hm-modules path:{path_priv_hm_modules}')
 
     # Peform update
     cmd = f'nix flake update {path_hm_configs / hm_config} {" ".join(nixargs)}'
