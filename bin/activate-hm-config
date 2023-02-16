@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+
+import os
+from pathlib import Path
+import argparse
+
+
+#########
+# Usage #
+#########
+
+parser = argparse.ArgumentParser(description='''
+    Update the lockfile of a home-manager config flake, then activate the hm-config.
+    If there is exactly one hm-config, the `hm_config` arg can be omitted, otherwise it is mandatory.
+    The `--local` mode uses local paths to the system-config-pub and system-config-priv repos. All three repos must sit in the same parent dir.
+''')
+parser.add_argument('hm_config', nargs='?', default=None)
+parser.add_argument('--local', action='store_true')
+
+
+#########
+# Setup #
+#########
+
+args = parser.parse_args()
+path_root = Path(os.path.realpath(__file__)).parent.parent
+path_hm_configs = path_root / 'hm-configs'
+
+# Determine hm-config
+hm_config = None
+if args.hm_config is None:
+    subdirs = list(path_hm_configs.iterdir())
+    assert len(subdirs) == 1, 'There is not exactly one hm-config, please specify one'
+    hm_config = subdirs[0].name
+else:
+    assert (path_hm_configs / args.hm_config).exists(), f'hm-config `{args.hm_config}` does not exist'
+    hm_config = args.hm_config
+
+
+################################
+# Update lockfile of hm-config #
+################################
+
+# Update lockfile
+if args.local:
+    # Use local paths
+    path_pub             = path_root.parent / 'system-config-pub'
+    path_pub_flakes      = path_root.parent / 'system-config-pub'  / 'flakes'
+    path_pub_hm_modules  = path_root.parent / 'system-config-pub'  / 'hm-modules'
+    path_priv            = path_root.parent / 'system-config-priv'
+    path_priv_flakes     = path_root.parent / 'system-config-priv' / 'flakes'
+    path_priv_hm_modules = path_root.parent / 'system-config-priv' / 'hm-modules'
+
+    assert path_pub_flakes.exists()
+    assert path_priv_flakes.exists()
+    assert path_pub_hm_modules.exists()
+    assert path_priv_hm_modules.exists()
+
+    nixargs = []
+    
+    # Local public flakes 
+    for flake in path_pub_flakes.iterdir():
+        if flake.is_dir():
+            nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
+    nixargs.append(f'--override-input global-config/system-config-pub-hm-modules path:{path_pub_hm_modules}')
+
+    # Local private flakes
+    for flake in path_priv_flakes.iterdir():
+        if flake.is_dir():
+            nixargs.append(f'--override-input global-config/{flake.name} path:{flake}')
+    nixargs.append(f'--override-input global-config/system-config-priv-hm-modules path:{path_priv_hm_modules}')
+
+    # Peform update
+    cmd = f'nix flake update {path_hm_configs / hm_config} {" ".join(nixargs)}'
+    print(cmd)
+    os.system(cmd)
+else:
+    # Peform update
+    cmd = f'nix flake update {path_hm_configs / hm_config}'
+    print(cmd)
+    os.system(cmd)
+
+
+############
+# Activate #
+############
+
+cmd = f'home-manager switch --flake {path_hm_configs / hm_config}#{hm_config}'
+print(cmd)
+os.system(cmd)
