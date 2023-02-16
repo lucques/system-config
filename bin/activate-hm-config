@@ -9,10 +9,17 @@ import argparse
 # Usage #
 #########
 
-parser = argparse.ArgumentParser(description='''
+parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description='''
     Update the lockfile of a home-manager config flake, then activate the hm-config.
+
     If there is exactly one hm-config, the `hm_config` arg can be omitted, otherwise it is mandatory.
-    The `--local` mode uses local paths to the system-config-pub and system-config-priv repos. All three repos must sit in the same parent dir.
+
+    The `--local` mode uses local paths to the system-config-pub and system-config-priv repos. All three repos should sit in the same parent dir:
+    1. `some-path/system-config`
+    2. `some-path/system-config-pub`
+    3. `some-path/system-config-priv`
+    If repo 2. or 3. is missing, then a warning is issued.
 ''')
 parser.add_argument('hm_config', nargs='?', default=None)
 parser.add_argument('--local', action='store_true')
