@@ -1,0 +1,2 @@
+# Ignored since the flake.lock is generated dynamically by `activate-hm-config`
+hm-configs/t470p/flake.lock
