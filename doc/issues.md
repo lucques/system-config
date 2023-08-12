@@ -36,3 +36,4 @@ Here comes an unsorted list of issues I encountered, some I could solve, some no
     - So, what to do? I split up my custom `lukespython3` interpreter into two:
         - `lukespython3` (binary will be wrapped by `wrapGAppsNoGuiHook` -- some other Gnome-related env vars will still be set) and
         - `lukespython3-gtk` (binary will be wrapped by `wrapGAppsHook` and contains GTK bindings etc.)
+    - Helpful link about Gnome-Gtk-Nix related issues: https://ryantm.github.io/nixpkgs/languages-frameworks/gnome/
