@@ -9,8 +9,7 @@
 
         # External
         nixpkgs.follows = "global-config/nixpkgs";
-        nixpkgs-2.follows = "global-config/nixpkgs-2";
-        nixpkgs-1.follows = "global-config/nixpkgs-1";
+        nixpkgs-1.follows = "global-config/nixpkgs-1"; # Not needed anymore. Keep this just as a reference for the future when we need to use an old version of nixpkgs again.
         utils.follows = "global-config/utils";
         home-manager.follows = "global-config/home-manager";
 
