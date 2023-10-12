@@ -9,7 +9,7 @@
 
         # External
         nixpkgs.follows = "global-config/nixpkgs";
-        nixpkgs-1.follows = "global-config/nixpkgs-1"; # Not needed anymore. Keep this just as a reference for the future when we need to use an old version of nixpkgs again.
+        nixpkgs-6.follows = "global-config/nixpkgs-6"; # Give access to an older nixpkgs revision
         utils.follows = "global-config/utils";
         home-manager.follows = "global-config/home-manager";
 
@@ -25,7 +25,7 @@
         keyboard-us-luckey.follows = "global-config/keyboard-us-luckey";
     };
 
-    outputs = { self, nixpkgs, lukesnixutils, home-manager, ...}@inputs:
+    outputs = { self, nixpkgs, nixpkgs-6, lukesnixutils, home-manager, ...}@inputs:
         let
             system   = "x86_64-linux";
             username = "luk";
@@ -36,7 +36,8 @@
                                           keyboard-us-luckey];
             overlayPackages = {inherit lukesnixutils;};
 
-            pkgs = lukesnixutils.lib.instantiateNixpkgs system nixpkgs overlayFlakes overlayPackages;
+            pkgs   = lukesnixutils.lib.instantiateNixpkgs system nixpkgs   overlayFlakes overlayPackages;
+            pkgs-6 = lukesnixutils.lib.instantiateNixpkgs system nixpkgs-6 overlayFlakes overlayPackages;
         in
 
         {
@@ -55,10 +56,8 @@
                     inputs.system-config-priv-hm-modules.nixosModules.linux-desktop
                 ];
 
-                # HACK: This is a hack to get the nixpkgs revision into the home-manager configuration.
-                # Currently not needed though.
-                # extraSpecialArgs.pkgs-2 = pkgs-2;
-                # extraSpecialArgs.pkgs-1 = pkgs-1;
+                # HACK: This is a hack to get an older nixpkgs revision into the home-manager configuration.
+                extraSpecialArgs.pkgs-6 = pkgs-6;
             };
         };
 }

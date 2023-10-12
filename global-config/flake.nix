@@ -13,7 +13,9 @@
 
         # Set the nixpkgs version here. The same version will be used for the
         # user's configuration via the registry entry.
-        nixpkgs.url   = "github:NixOS/nixpkgs/491a731e318ed892a590e0d80be873ff2f34647d";       # 2023-07
+        nixpkgs.url   = "github:NixOS/nixpkgs/252688892fde6cbb394b6e63e17e91b0892629f8";       # 2023-09
+        nixpkgs-7.url = "github:NixOS/nixpkgs/252688892fde6cbb394b6e63e17e91b0892629f8";       # 2023-09
+        nixpkgs-6.url = "github:NixOS/nixpkgs/491a731e318ed892a590e0d80be873ff2f34647d";       # 2023-07
         nixpkgs-5.url = "github:NixOS/nixpkgs/82a308407fcde838b07a1c7746dc63c811c82562";       # 2023-07
         nixpkgs-4.url = "github:NixOS/nixpkgs/18fa71bbe00d702cfd1d531adfb3ac5e2e360971";       # 2023-03
         nixpkgs-3.url = "github:NixOS/nixpkgs/c7f5909800fd2b41042f03dcdd094e45c2873999";       # 2023-02
@@ -22,9 +24,8 @@
 
         utils.url     = "github:numtide/flake-utils/5aed5285a952e0b949eb3ba02c12fa4fcfef535f"; # 2022-11
         home-manager = {
-            url = github:nix-community/home-manager/89d10f8adce369a80e046c2fd56d1e7b7507bb5b;  # 2023-07
+            url = github:nix-community/home-manager/0f4e5b4999fd6a42ece5da8a3a2439a50e48e486;  # 2023-09
             inputs.nixpkgs.follows = "nixpkgs";
-            inputs.utils.follows = "utils";
         };
 
 
