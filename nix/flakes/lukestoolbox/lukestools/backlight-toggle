@@ -1,0 +1,10 @@
+#!/usr/bin/env lukespython3
+
+from lukespylib import lukespylib as lib
+
+brightness = float(lib.exeOutput(['brightnessctl', 'g']))
+
+if brightness > 0:
+    lib.exe(['sudo', 'brightnessctl', 's', '0'])
+else:
+    lib.exe(['sudo', 'brightnessctl', 's', '80%'])

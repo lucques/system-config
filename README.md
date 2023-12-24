@@ -1,88 +1,40 @@
-# System configuration using Nix
+# System configuration
 
-This repository contains the main configuration for my Linux machines (all Debian). For the configuration I use the Nix package manager together with home-manager to manage the user software.
+This repository contains the main configuration for my Linux machines (all Debian). The config components can be sorted along two axes.
+1. Manual vs. Automatic: Some config is documented in prose and must be done "manually". I try to automate as much as possible, mainly through the use of the Nix package manager together with home-manager.
+2. Public vs. Private: Most configuration is public, but some configuration I don't want to share and this is kept in a separate private repo.
 
-Much software, especially the system-related parts, are not managed by Nix for now, but using NixOS at some point is a good perspective. In order not to break things *too* quickly on my production machines, I like being able to rely on good ole Debian and generally I like the idea of adding the Nix philosophy (here mainly: declarative system config) smoothly step by step.
+## Manual vs. automatic
+Most software is managed by Debian's APT, including most GUI software. Some software is managed by Nix, mainly command-line tools. The reason for this separation is their incompatibility -- GUI software often depends on each other, and the Nix-installed software then is not compatible with the APT-installed GUI backends.
 
-The configuration is public in case it is of help to others. Nix and its ecosystem are wonderful tools but there are still many rough edges, so sharing the configuration may help others to get started. I myself benefited a lot from reading other people's resources. I tried to document some lessons learned and other tips, mostly for my future self but if it serves further people, then the better!
+Nix is used for many configuration files. APT-managed software therefore uses Nix-managed config files. Using Nix for config files is great as it offers a great template mechanism.
 
-The configuration is split into three repos. See more details under "Usage".
-1. This repo. Contains the main configuration flakes that bundle together the components.
-2. Public repo. Contains the public components.
+## Public vs. private
+Most of the configuration is public in case it is of help to others. Nix and its ecosystem are wonderful tools but there are still many rough edges, so sharing the configuration may help others to get started. I myself benefited a lot from reading other people's resources. I tried to document some lessons learned and other tips, mostly for my future self but if it serves further people, then the better!
+
+## Organization
+The configuration is split into two repos. See more details under "Usage".
+1. This repo. Contains the public components.
 2. Private repo. Contains the private components.
-
+How are those components kept separate but are automatically mergable nonetheless? Two short answers: a) Some components are hm-modules and these are mergable by design. b) Some config files consist of public and private parts, and are concatenated at build-time.
 
 ## Usage
+In order to reproduce a system configuration, follow these steps.
 
-1. Install Nix package manager: https://nixos.org/download.html
-2. Install `home-manager`: https://nix-community.github.io/home-manager/index.html
-3. Clone the following repositories to some location, say `~/repos`.
-    - `~/repos/system-config` (this repo)
-    - `~/repos/system-config-pub` (public repo at [https://github.com/lucques/system-config-pub](https://github.com/lucques/system-config-pub))
-        - Optional, but needed for activation via `--local`. See details further down.
-    - `~/repos/system-config-priv` (private repo)
-        - Optional, but may be needed for activation via `--local`. See details further down.
-4. Go to `~/repos/bin`.
-    - The script `activate-hm-config` is used to activate an hm-config.
-        - If an hm-config carries the suffix `-pub-only`, it means that private components are omitted.
-        - The flag `--local` means that the locally cloned repos should be used.
-    - Here are four representative examples with explanations.
-        - `activate-hm-config t470p-pub-only`
-            - Activate the public config for my Thinkpad T470p, taken from GitHub
-            - This should work right out of the box, just by cloning this very repo.
-        - `activate-hm-config t470p-pub-only --local`
-            - Activate the local public config for my Thinkpad T470p
-            - This should work out of the box if you cloned the `system-config-pub` repo according to step 3.
-        - `activate-hm-config t470p`
-            - Activate the public+private config for my Thinkpad T470p, taken from GitHub.
-            - This will crash, since the private repo url is just some dummy.
-        - `activate-hm-config t470p --local`
-            - Activate the local public+private config for my Thinkpad T470p
-            - This option should only be available to me. 
+1. Reproduce manual configuration
+2. Reproduce automatic configuration
 
-
-## Explanations
-
-- Directory structure
-    - `bin` contains scripts that are used to activate the hm-configs
+## Directory structure
+- `bin` contains scripts that are used to activate the hm-configs
+- `doc`
+    - [`config_automatic.md`](./doc/config_automatic.md): Automatic (i.e., Nix-based) documentation
+    - [`config_manual.md`](./doc/config_manual.md): Manual documentation
+    - [`general_log.md`](./doc/general_log.md): Timestamp-based log
+    - [`past_issues.md`](./doc/past_issues.md): Documentation of issues encountered in the past
+    - [`todos.md`](./doc/todos.md): TODOs
+- `nix` anything Nix-related
+    - `flakes` contains flakes of small tools
     - `global-config` is a flake whose only purpose is to pin specific versions of nixpkgs etc. 
-    - `hm-configs` contains home-manager-configs
-    - `doc` contains documentation
-- Activation
-    - After running the `./bin/activate-hm-config` script, the `~/.nix-profile/bin` dir points to the installed software ("activated")
-- Nixpkgs repository versions
-    - Most derivations are from the nixpkgs repository.
-    - The versions are declared as inputs of the machine config, each pointing to a specific commit.
-    - All pinned inputs are declared in the `global-config` flake. Here the whole flake dependency DAG is tied together. Any hm-config just points to this `global-config` flake and follows its inputs.  
-    - The following local version scheme is used, newest is top
-        - `nixpkgs` input is the main one ("stable")
-        - ...
-        - `nixpkgs-7` input is version 7 etc.
-        - ...
-        - `nixpkgs-1` input is version 1
-    - Most flakes' inputs are set to some default version...
-        - `nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";`
-        - `utils.url   = "github:numtide/flake-utils";`
-        - ... but then get overriden in `global-config` to match the pinned versions.
-- Flake `lukestoolbox`
-    - `lukespylib`: Python package with common functions. 
-    - `lukespython3`: Python interpreter
-        - Contains `lukespylib` and some other modules.
-        - It is used in two ways:
-            1. For the scripts that are packaged into `lukestools` (see flake `lukestoolbox`)
-            2. For scripts that are locally sitting somewhere, with `lukespython3` specified shebang.
-        - Now the problem is with the env vars that are needed to run the interpreter.
-            - GTK apps in python need some special env vars set to work properly
-            - The solution is to wrap the `bin/python3` executable.
-    - `lukestools`: User scripts that may use `lukespython3` as interpreter
-    - `lukestools-priv`: Same, but private
-- Startup apps: Configure in `xsession.nix` under `startup`
-
-
-## Further manual setup
-See [here](./doc/manual_setup.md).
-
-
-## Todos
-
-- Set up Thunar properly
+    - `hm-components` contains automatic config components
+        - `hm-modules` contains separate home-manager modules
+    - `hm-configs` contains home-manager configs

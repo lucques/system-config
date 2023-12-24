@@ -1,0 +1,52 @@
+#!/usr/bin/env lukespython3
+
+# This script is for checking if the various libraries are loaded correctly.
+# It is not meant to be used as a tool.
+#
+# Things to check:
+# - Python interpreter info
+# - $PATH env var
+# - Whether `lukespylib` gets loaded
+# - Whether GTK 3 works
+# - Whether `i3ipc` gets loaded
+
+
+########################################
+# Print general info about interpreter #
+########################################
+
+import sys
+import os
+from pprint import pprint
+print(f"Python version\n{sys.version}\n")
+print(f"Python version info\n{sys.version_info}\n")
+print(f"Python interpreter path\n{sys.executable}\n")
+
+if ('PATH' in os.environ):
+    print(f"$PATH is")
+    pprint(os.environ['PATH'].split(':'))
+else:
+    print(f"$PATH env var not set")
+
+
+######################
+# Check `lukespylib` #
+######################
+
+from lukespylib import lukespylib as lib
+
+
+###############
+# Check GTK 3 #
+###############
+
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+
+################
+# Check i3 IPC # 
+################
+
+from i3ipc import Connection, Event

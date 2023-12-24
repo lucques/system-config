@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+signal-desktop --use-tray-icon

@@ -1,0 +1,48 @@
+#!/usr/bin/env lukespython3
+
+# This script somehow did not work last time I installed it. It seemed like the command
+# `i3.command('[class="thunar-floating"] mark floathun')`
+# did not catch the class `"thunar-floating"`. Removing the class constraint helped.
+# It suddenly started working again, no idea why...
+
+
+import sys
+from i3ipc import Connection, Event
+
+############
+# Handlers #
+############
+
+# This handler is called directly after the new thunar instance is opened - this is so that the `floathun` mark can get assigned. The script is exited after the first and only call to this handler.
+def on_window_focus(i3, e):
+    i3.command('[class="thunar-floating"] mark floathun')
+    sys.exit()
+
+########
+# Main #
+########
+
+i3 = Connection()
+
+workspace_current = i3.get_tree().find_focused().workspace().name
+floathun_windows  = i3.get_tree().find_marked("floathun")
+
+# floating = i3.get_tree().scratchpad().leaves()
+# i3.command(f'exec notify-send "hi{floathun_window[0].workspace().name}"')
+
+# If thunar is running on the scratchpad, bring it to top and integrate into workspace
+if floathun_windows:
+    workspace_floathun = floathun_windows[0].workspace().name
+    if workspace_floathun == '__i3_scratch':
+        i3.command('[con_mark="floathun"] scratchpad show, floating disable')
+    elif workspace_floathun == workspace_current:
+        i3.command('[con_mark="floathun"] move scratchpad')
+    else:
+        i3.command('[con_mark="floathun"] move container to workspace current, focus')
+else:
+    # Register the one-time handler
+    i3.on(Event.WINDOW_FOCUS, on_window_focus)
+    i3.command('[class="thunar-floating"] kill')
+    i3.command('exec thunar --class="thunar-floating"')
+    # Start event loop
+    i3.main()

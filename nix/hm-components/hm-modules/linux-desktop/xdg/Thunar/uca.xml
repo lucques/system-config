@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1606485043958594-1</unique-id>
+	<command>i3-thunar-spawn-term %f</command>
+	<description>Open Terminal Here</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>/usr/share/icons/Tango/scalable/actions/search.svg</icon>
+	<name>Search...</name>
+	<unique-id>1606490271697497-1</unique-id>
+	<command>catfish</command>
+	<description>Search using catfish</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>/usr/share/icons/Tango/scalable/actions/search.svg</icon>
+	<name>Run...</name>
+	<unique-id>1606490271635493-1</unique-id>
+	<command>thunar-spawn-run %f</command>
+	<description>Run dialog</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>/usr/share/icons/Tango/scalable/actions/search.svg</icon>
+	<name>Save clipboard image in existing file</name>
+	<unique-id>1606490271635491-1</unique-id>
+	<command>thunar-clipboard-image-to-existing-file %f</command>
+	<description>Save clipboard image in existing file</description>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+<action>
+	<icon>/usr/share/icons/Tango/scalable/actions/search.svg</icon>
+	<name>Save clipboard image in new file</name>
+	<unique-id>1672624878998460-1</unique-id>
+	<command>thunar-clipboard-image-to-new-file %f</command>
+	<description>Save clipboard image in new file</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+
+</actions>

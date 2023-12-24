@@ -1,0 +1,20 @@
+#!/usr/bin/env lukespython3
+
+import sys
+import os
+import subprocess
+
+
+########
+# Main #
+########
+
+# Open in target directory?
+if len(sys.argv) >= 2:
+    path = sys.argv[1]
+    # Chop off file name if present
+    if os.path.isfile(path):
+        path = os.path.dirname(path)
+    subprocess.run(f'cd {path} &&  dmenu_run', shell=True, check=True)
+else:
+    subprocess.run('dmenu_run', shell=True, check=True)

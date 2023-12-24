@@ -1,0 +1,40 @@
+#!/usr/bin/env lukespython3
+
+import sys
+import os
+from i3ipc import Connection, Event
+
+############
+# Handlers #
+############
+
+# This handler is called directly after the new terminal is opened - this is so that the size can be set
+def on_window_focus(i3, e):
+    i3.command('resize set 0 200')
+    sys.exit()
+
+########
+# Main #
+########
+
+i3 = Connection()
+
+thunar_instances = i3.get_tree().find_marked("floathun")
+
+if thunar_instances:
+    t = thunar_instances[0]
+    t.command('split vertical')
+
+    # Open in target directory?
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+        # Chop off file name if present
+        if os.path.isfile(path):
+            path = os.path.dirname(path)
+        t.command(f'exec (cd "{path}" && i3-sensible-terminal)')
+    else:
+        t.command(f'exec i3-sensible-terminal')
+
+    # Register the one-time handler
+    i3.on(Event.WINDOW_FOCUS, on_window_focus)
+    i3.main()
