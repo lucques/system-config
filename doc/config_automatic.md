@@ -9,7 +9,12 @@ Automatic configuration is entirely done in Nix for now.
     ```
     experimental-features = nix-command flakes
     ```
-3. Install `home-manager`: https://nix-community.github.io/home-manager/index.html
+3. Install `home-manager` as follows:
+    ```
+    nix registry add flake:nixpkgs github:...       #(insert version pinned in global-config)
+    nix registry add flake:home-manager github:...  #(insert version pinned in global-config)
+    nix profile install home-manager
+    ```
 4. Clone the following repositories to some location, say `~/repos`.
     - `~/repos/system-config` (this repo)
     - `~/repos/system-config-priv` (private repo)
