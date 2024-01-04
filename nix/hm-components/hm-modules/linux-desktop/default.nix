@@ -10,15 +10,12 @@
         lukestools
         lukespython3        # Custom python3 env
 
-        fzf
-        tldr
         # ncdu_2 # What is this?
 
         # chez
 
-        pandoc
+        # pandoc
 
-        xournalpp
 
         # Nodejs
         # nodePackages.node2nix
@@ -41,7 +38,7 @@
     xdg = {
         enable = true;
         configFile = {
-            "Thunar".source  = ./xdg/Thunar;
+
         };
     };
 

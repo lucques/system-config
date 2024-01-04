@@ -1,0 +1,59 @@
+---
+packages_present:
+  # Desktop
+  - i3
+  - i3lock-fancy
+  - thunar
+  - arandr
+
+  # Web & Mail
+  - firefox-esr
+  - thunderbird
+
+  # Misc tools
+  - galculator
+  - flameshot
+  - ghex
+  - filezilla
+  - meld
+  - gitg
+  - poedit
+  - audacity
+  - gedit
+  - gscan2pdf
+  - keepassxc
+
+  # Graphics
+  - gimp
+  - inkscape
+
+  # Background apps
+  - gammastep
+  - feh
+
+  # System tools
+  - libsecret-tools # for `secret-tool`
+  - pulseaudio-utils
+  - ansible
+  - snapd
+  - brightnessctl
+
+  # Drivers etc.
+  - xserver-xorg-input-wacom  # for Wacom graphics tablet
+
+  # Terminal tools
+  - zsh
+  - cookiecutter
+  - direnv
+  - git
+  - fzf
+  - tldr
+
+  # LaTeX
+  - texlive-full
+
+  # Python
+  - python3
+  - python3-pip
+  - python3-fire
+  

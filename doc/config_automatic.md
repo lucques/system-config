@@ -1,5 +1,28 @@
 # Automatic configuration
-Automatic configuration is entirely done in Nix for now.
+Automatic configuration is entirely done with Ansible and Nix package manager + home-manager for now.
+
+## Setup
+Clone the following repositories to some location, say `~/repos`.
+- `~/repos/system-config` (this repo)
+- `~/repos/system-config-priv` (private repo)
+    - Optional, needed for activation via `--private`. See details further down.
+
+## Ansible
+
+### Setup
+1. Install Ansible: `sudo apt install ansible`
+2. Go to `~/repos/system-config/bin`.
+    - The script `activate_config_ansible.py` is used to activate an Ansible playbook.
+        - The flag `--private` requires the the locally cloned `system-config-priv` repo.
+        - If an Ansible playbook carries the suffix `-pub-only`, it means that no private components are needed.
+    - Here are two representative examples with explanations.
+        - `activate_config_ansible.py t470p-pub-only`
+            - Activate the Ansible part of the public config for my Thinkpad T470p
+            - This should work right out of the box, just by cloning this very repo.
+        - `activate_config_ansible.py t470p --private`
+            - Activate the Ansible part of the public+private config for my Thinkpad T470p
+            - This option should only be available to me. 
+
 
 ## Nix
 
@@ -15,22 +38,18 @@ Automatic configuration is entirely done in Nix for now.
     nix registry add flake:home-manager github:...  #(insert version pinned in global-config)
     nix profile install home-manager
     ```
-4. Clone the following repositories to some location, say `~/repos`.
-    - `~/repos/system-config` (this repo)
-    - `~/repos/system-config-priv` (private repo)
-        - Optional, needed for activation via `--with-priv`. See details further down.
-5. Go to `~/repos/system-config/bin`.
-    - The script `activate-hm-config` is used to activate an hm-config.
-        - The flag `--priv` requires the the locally cloned `system-config-priv` repo.
+4. Go to `~/repos/system-config/bin`.
+    - The script `activate_config_hm.py` is used to activate an hm-config.
+        - The flag `--private` requires the the locally cloned `system-config-priv` repo.
         - If an hm-config carries the suffix `-pub-only`, it means that no private components are needed.
     - Here are two representative examples with explanations.
-        - `activate-hm-config t470p-pub-only`
-            - Activate the public config for my Thinkpad T470p
+        - `activate_config_hm.py t470p-pub-only`
+            - Activate the Nix part of the public config for my Thinkpad T470p
             - This should work right out of the box, just by cloning this very repo.
-        - `activate-hm-config t470p --priv`
-            - Activate the public+private config for my Thinkpad T470p
+        - `activate_config_hm.py t470p --private`
+            - Activate the Nix part of the public+private config for my Thinkpad T470p
             - This option should only be available to me. 
-    - After running the `./bin/activate-hm-config` script, the `~/.nix-profile/bin` dir points to the installed software ("activated")
+    - After running the `./bin/activate_config_hm.py` script, the `~/.nix-profile/bin` dir points to the installed software ("activated")
 
 
 ### Nixpkgs repository versions

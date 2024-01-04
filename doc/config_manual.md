@@ -13,17 +13,9 @@ The following system configuration has to be done manually.
 - `de-DE_UTF8`
 
 ## Backlight management
-- Install manually: `brightnessctl`
 - Add the following line `luk ALL = (root) NOPASSWD: /usr/bin/brightnessctl` to `/etc/sudoers`.
 - Reason: Needs to be run as root.
 - Script `backlight-toggle` calls this system-installed package.
-
-## Autokey
-- Reason: Not yet tracked, because the config is done via GUI and it's not so clear how to best go about that.
-- Install manually: `autokey-gtk`
-
-## VS Code
-- TODO Track with Nix?
 
 ## Alternatives system
 - Set default browser:
@@ -32,11 +24,17 @@ The following system configuration has to be done manually.
     --install /usr/bin/x-www-browser x-www-browser firefox 210`
     ```
 
-## Wacom Intuos S CTL-4100
-- Official support: https://linuxwacom.github.io/
-- Hardware should be supported out-of-the-box by modern kernel
-- Install furthermore the following Debian package: `xserver-xorg-input-wacom`
-- There are GUIs for Gnome / KDE, but they probably only run on these desktop envs.
-- Therefore: CLI. All you need to know is documented in this great blog post https://joshuawoehlke.com/wacom-intuos-and-xsetwacom-on-ubuntu-18-04/
+## Brother HL-L2370DN printer
+- Install "Driver Install Tool" from Brother website, Version 19.08.2021 (2.2.3-1)
 
-## Install further software
+## Install snap
+- `sudo apt install snapd`
+
+## Install further software from external sources
+- VS Code
+- Spotify (snap)
+- Skype (snap)
+- Pinta (snap)
+
+## Install Ansible
+- `sudo apt install ansible`

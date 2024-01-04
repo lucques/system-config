@@ -1,0 +1,5 @@
+---
+- name: Configure T470p, public components only
+  hosts: localhost
+  roles:
+    - linux-desktop-pub

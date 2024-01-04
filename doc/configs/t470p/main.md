@@ -2,6 +2,8 @@
 
 - OS: Debian 12 (Bookworm)
 
+- first install python3, python3-fire, ansible
+
 # APT-managed packages
 - i3
 - i3lock-fancy
@@ -20,7 +22,6 @@
 - ghex
 - thunar
 - filezilla
-- flameshot
 - meld
 - gitg
 - poedit

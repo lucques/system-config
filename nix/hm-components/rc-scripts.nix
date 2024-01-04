@@ -4,6 +4,8 @@
             order = 1;
             content = ''
                 TERMINAL = "/usr/bin/gnome-terminal";
+                #export LANG="en_US.UTF-8"
+                #export LC_ALL="en_US.UTF-8"
             '';
         }
     ];
@@ -13,6 +15,7 @@
             order = 1;
             content = ''
                 PATH="$HOME/bin:$PATH"
+                PATH="/snap/bin:$PATH"
             '';
         }
     ];
@@ -25,6 +28,9 @@
 
 
                 export EDITOR='nano'
+
+                # Activate opam
+                [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 
                 setopt extendedglob
@@ -55,14 +61,15 @@
         }
     ];
 
-    ".profile" = [
-        {
-            order = 1;
-            content = ''
-                . $HOME/.shell-login-rc
-            '';
-        }
-    ];
+    # Deactivate so as not to run it twice (once in .xsessionrc and once in .profile)
+    # ".profile" = [
+    #     {
+    #         order = 1;
+    #         content = ''
+    #             . $HOME/.shell-login-rc
+    #         '';
+    #     }
+    # ];
 
     ".bashrc" = [
         {
@@ -87,7 +94,6 @@
                 # Hack: Reset this var, since Nix overrides it and this causes
                 # segmentation faults in some GTK apps.
                 XDG_DATA_DIRS=/usr/local/share:/usr/share
-
 
                 exec i3 $@
             '';

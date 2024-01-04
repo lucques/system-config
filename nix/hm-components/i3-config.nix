@@ -175,7 +175,7 @@ in
                 assign [class="firefox"] "103:f"
 
                 # Screen capture
-                bindsym ${mod}+F8 exec flameshot
+                bindsym ${mod}+F8 exec flameshot gui
 
                 # Terminal
                 bindsym ${mod}+Return exec i3-sensible-terminal

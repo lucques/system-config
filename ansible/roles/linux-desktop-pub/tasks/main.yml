@@ -1,0 +1,12 @@
+---
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ packages_present }}"
+    state: present
+  become: yes
+
+- name: Copy Thunar data
+  ansible.builtin.copy:
+    src: Thunar
+    dest: "{{ ansible_env.HOME }}/.config/"
+    owner: "{{ ansible_user_id }}"
