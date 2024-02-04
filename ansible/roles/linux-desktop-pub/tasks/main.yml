@@ -1,9 +1,26 @@
 ---
-- name: Install packages
+- name: Install APT packages
   ansible.builtin.apt:
-    name: "{{ packages_present }}"
+    name: "{{ packages_apt }}"
     state: present
   become: yes
+
+
+
+- name: Install Snap packages
+  ansible.builtin.snap:
+    name: "{{ packages_snap }}"
+    state: present
+  become: yes
+
+- name: Install duplicity package
+  ansible.builtin.snap:
+    name: "duplicity"
+    classic: yes
+    state: present
+  become: yes
+  
+
 
 - name: Copy Thunar data
   ansible.builtin.copy:

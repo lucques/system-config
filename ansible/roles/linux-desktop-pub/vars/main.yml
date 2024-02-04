@@ -1,5 +1,5 @@
 ---
-packages_present:
+packages_apt:
   # Desktop
   - i3
   - i3lock-fancy
@@ -32,10 +32,9 @@ packages_present:
   - feh
 
   # System tools
+  - snapd
   - libsecret-tools # for `secret-tool`
   - pulseaudio-utils
-  - ansible
-  - snapd
   - brightnessctl
 
   # Drivers etc.
@@ -56,4 +55,8 @@ packages_present:
   - python3
   - python3-pip
   - python3-fire
-  
+
+packages_snap:
+  - spotify
+  - pinta
+  - skype

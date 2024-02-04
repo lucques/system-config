@@ -1,0 +1,132 @@
+#!/usr/bin/env lukespython3
+
+"""
+This is a simple backup and restore tool for duplicity. It is intended to be used with a remote location with support for rsync. The configuration file is expected to be located at `~/.config/luback/config.yaml`. 
+"""
+
+import os
+import fire
+import yaml
+from pathlib import Path
+
+
+PATH_CONFIG_DEFAULT  = '~/.config/luback/config.yaml'
+DUPLICITY_OPTIONS    = '--rsync-options=\"--recursive --links --times --devices --specials --verbose --rsh ssh\"'
+
+##########
+# Backup #
+##########
+
+def backup(*targets, config_path=PATH_CONFIG_DEFAULT, verbose=False):
+    """
+    Save targets to a remote location.
+    """
+
+    ####################
+    # Load config file #
+    ####################
+
+    config_path = Path(os.path.expanduser(config_path))
+
+    config = None
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+
+    log_path = None
+    if 'log_path' in config:      
+        log_path = Path(config['log_path'])
+        assert log_path.exists(), f'log path `{log_path}` does not exist'
+
+
+    ##########
+    # Backup #
+    ##########
+
+    for target in targets:            
+        path_src = config['targets'][target]['src']
+        path_dst = config['targets'][target]['dst']
+
+
+        #########################
+        # Create dirs on remote #
+        #########################
+
+        print('Creating dirs on remote host...', flush=True)
+
+        # Kind of hacky, but this works: https://stackoverflow.com/questions/27420116/how-to-create-directory-if-doesnt-exists-in-sftp
+        dirs = path_dst.split('/')
+        sftp_command = '{\n'
+        for i in range(0, len(dirs)):
+            sftp_command += f'  echo -mkdir {config["remote_basepath"]}/{"/".join(dirs[:i+1])} \n'
+        sftp_command += '}'
+
+        cmd = f'{sftp_command} | sftp -b - {config["remote_user"]}@{config["remote_host"]}'
+        print(cmd)
+        exit_status = os.system(cmd)
+        assert (exit_status >> 8) == 0
+
+
+        print(flush=True)
+
+
+        ##################
+        # Perform backup #
+        ##################
+
+        print('Performing backup...', flush=True)
+
+        cmd = f'PASSPHRASE=$(secret-tool lookup strato enc) duplicity backup "{path_src}" "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
+        
+        with open(log_path, 'a') as f: f.write('START: ' + cmd + '\n')
+        print('START: ' + cmd, flush=True)
+
+        exit_status = os.system(cmd)
+        assert (exit_status >> 8) == 0
+
+        with open(log_path, 'a') as f: f.write('END:   ' + cmd + '\n')
+        print('END:   ' + cmd, flush=True)
+
+
+
+###########
+# Restore #
+###########
+
+def restore(target, path_config=PATH_CONFIG_DEFAULT, verbose=False):
+    """
+    Restore a target from a remote location.
+    """
+
+    ####################
+    # Load config file #
+    ####################
+
+    path_config = Path(os.path.expanduser(path_config))
+
+    config = None
+    with open(path_config, 'r') as file:
+        config = yaml.safe_load(file)
+
+
+    ###################
+    # Perform restore #
+    ###################
+
+    path_src = config['targets'][target]['src']
+    path_dst = config['targets'][target]['dst']
+
+    cmd = f'PASSPHRASE=$(secret-tool lookup strato enc) duplicity restore "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" "{path_src}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
+    print(cmd, flush=True)
+    exit_status = os.system(cmd)
+    assert (exit_status >> 8) == 0
+
+
+########
+# Main #
+########
+    
+if __name__ == '__main__':
+    fire.Fire({
+        'backup': backup,
+        'restore': restore
+    })

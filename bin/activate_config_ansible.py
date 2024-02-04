@@ -56,7 +56,7 @@ def activate_config_ansible(playbook, private=False, verbose=False):
     # Run playbook #
     ################
         
-    cmd = f'ANSIBLE_NOCOWS=1 ANSIBLE_ROLES_PATH={env_var_roles_path} ansible-playbook -i localhost, --connection=local{" -vv" if verbose else ""} --ask-become-pass {path_playbook}'
+    cmd = f'ANSIBLE_NOCOWS=1 ANSIBLE_ROLES_PATH={env_var_roles_path} ansible-playbook -i localhost, --connection=local{" -vvv" if verbose else ""} --ask-become-pass {path_playbook}'
     print(cmd, flush=True)
     exit_status = os.system(cmd)
     assert (exit_status >> 8) == 0

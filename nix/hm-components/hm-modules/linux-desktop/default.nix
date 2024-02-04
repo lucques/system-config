@@ -9,12 +9,13 @@
 
         lukestools
         lukespython3        # Custom python3 env
+        lukespython3gtk     # Custom python3 env with gtk
 
         # ncdu_2 # What is this?
 
         # chez
 
-        # pandoc
+        pandoc`
 
 
         # Nodejs

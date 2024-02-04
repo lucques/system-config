@@ -3,6 +3,8 @@
         {
             order = 1;
             content = ''
+                . $HOME/.shell-ordinary-rc
+
                 TERMINAL = "/usr/bin/gnome-terminal";
                 #export LANG="en_US.UTF-8"
                 #export LC_ALL="en_US.UTF-8"
