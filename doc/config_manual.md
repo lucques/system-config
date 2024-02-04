@@ -1,4 +1,4 @@
-# Further manual setup
+# Manual configuration
 
 The following system configuration has to be done manually.
 
@@ -35,6 +35,7 @@ The following system configuration has to be done manually.
 - Spotify (snap)
 - Skype (snap)
 - Pinta (snap)
+- duplicity (snap)
 
 ## Install Ansible
 - `sudo apt install ansible`

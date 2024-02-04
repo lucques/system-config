@@ -30,6 +30,8 @@
             # Python packages for `lukespython3` and `lukespython3gtk`
             commonPythonPackages = pythonPkgs: with pythonPkgs; [
                 i3ipc   # bindings for i3 IPC
+                fire
+                pyyaml
             ];
         in
 
@@ -112,42 +114,15 @@
                             '';
                         };
                 
-                lukestools =
-                    let
-                        scriptDeps = import ./lukestools.nix pkgs;
-                    in
-                
+                lukestools =                
                     pkgs.stdenv.mkDerivation {
                         pname = "lukestools";
                         version = "0.1.0";
                         src = ./lukestools;
-                        buildInputs = [
-                            # For scripts written in python. Gets automatically injected into the scripts by `patchShebangs` 
-                            self.packages.${system}.lukespython3
-                            self.packages.${system}.lukespython3gtk
-                        ];
-                        nativeBuildInputs = [
-                            # For scripts that have dependencies: Explicitly prepare $PATH via wrapper.
-                            # Use `makeBinaryWrapper` instead of `makeWrapper` (due to MacOS limitation)
-                            pkgs.makeBinaryWrapper
-                        ];
                         installPhase = ''
                             mkdir -p $out/bin
                             cp $src/* $out/bin
                         '';
-                        postFixup =
-                            let
-                                prepareEntry = entry:
-                                    if entry.deps != [] then
-                                        "wrapProgram $out/bin/${entry.script} --prefix PATH : ${pkgs.lib.makeBinPath entry.deps} "
-                                    else
-                                        "";
-                                
-                                lines = builtins.map
-                                    prepareEntry
-                                    scriptDeps;
-                            in
-                                builtins.concatStringsSep "\n" lines;
                     };
 
                 default = self.packages.${system}.lukestools;
