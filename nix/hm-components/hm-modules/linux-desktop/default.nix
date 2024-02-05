@@ -15,7 +15,7 @@
 
         # chez
 
-        pandoc`
+        pandoc
 
 
         # Nodejs

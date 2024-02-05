@@ -5,6 +5,7 @@ This is a simple backup and restore tool for duplicity. It is intended to be use
 """
 
 import os
+import time
 import fire
 import yaml
 from pathlib import Path
@@ -35,7 +36,7 @@ def backup(*targets, config_path=PATH_CONFIG_DEFAULT, verbose=False):
     log_path = None
     if 'log_path' in config:      
         log_path = Path(config['log_path'])
-        assert log_path.exists(), f'log path `{log_path}` does not exist'
+        log_path.touch(exist_ok=True)
 
 
     ##########
@@ -77,14 +78,18 @@ def backup(*targets, config_path=PATH_CONFIG_DEFAULT, verbose=False):
 
         cmd = f'PASSPHRASE=$(secret-tool lookup strato enc) duplicity backup "{path_src}" "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
         
-        with open(log_path, 'a') as f: f.write('START: ' + cmd + '\n')
-        print('START: ' + cmd, flush=True)
+        log_start = time.strftime('%Y-%m-%d.%H-%M-%S') + '  START: ' + cmd
+        if log_path:
+            with open(log_path, 'a') as f: f.write(log_start + '\n')
+        print(log_start, flush=True)
 
         exit_status = os.system(cmd)
         assert (exit_status >> 8) == 0
 
-        with open(log_path, 'a') as f: f.write('END:   ' + cmd + '\n')
-        print('END:   ' + cmd, flush=True)
+        log_end = time.strftime('%Y-%m-%d.%H-%M-%S') + '  END:   ' + cmd
+        if log_path:
+            with open(log_path, 'a') as f: f.write(log_end + '\n')
+        print(log_end, flush=True)
 
 
 
