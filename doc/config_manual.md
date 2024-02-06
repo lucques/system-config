@@ -31,6 +31,17 @@ The following system configuration has to be done manually.
 - Run `sudo dpkg-reconfigure lightdm`
 - In config file `/etc/lightdm/lightdm.conf`, activate the line `autologin-user=luk` but be careful: It must be in the `[Seat:*]` section!
 
+### i3-with-nix
+- Normally, nix is activated in `/etc/zsh/zshrc` and `/etc/bash/bash.bashrc`
+    - "Activation" means `. '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'` 
+    - Problem: When i3 is started, nix is not yet activated, therefore nix-installed software is not in the `PATH`
+    - Solution: Remove these activations
+- Instead, activate before starting the i3 session: 
+    - The script `~/bin/i3-with-nix` is prepared to wrap the standard `i3` session, along with an ativation account
+    - Copy `~/bin/i3-with-nix` to `/usr/bin/i3-with-nix` 
+    - Change file permissions to 644
+    - Copy `/usr/share/xsessions/i3.desktop` to `/usr/share/xsessions/i3-with-nix.desktop` and replace in the file `i3` by `i3-with-nix`
+
 ### Locales
 - Run `sudo dpkg-reconfigure locales` with
 - `en-US_UTF8`
@@ -60,6 +71,7 @@ The following system configuration has to be done manually.
 - Docker
 - Xournal++
 - Veracrypt
+- Node.js
 
 ### Oh-my-zsh
 - Install by cloning repo from github

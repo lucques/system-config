@@ -3,7 +3,8 @@
         {
             order = 1;
             content = ''
-                . $HOME/.shell-ordinary-rc
+                PATH="$HOME/bin:$PATH"
+                PATH="/snap/bin:$PATH"
 
                 TERMINAL = "/usr/bin/gnome-terminal";
                 #export LANG="en_US.UTF-8"
@@ -16,8 +17,7 @@
         {
             order = 1;
             content = ''
-                PATH="$HOME/bin:$PATH"
-                PATH="/snap/bin:$PATH"
+
             '';
         }
     ];

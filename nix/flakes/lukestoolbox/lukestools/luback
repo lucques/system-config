@@ -1,7 +1,31 @@
 #!/usr/bin/env lukespython3
 
 """
-This is a simple backup and restore tool for duplicity. It is intended to be used with a remote location with support for rsync. The configuration file is expected to be located at `~/.config/luback/config.yaml`. 
+This is a simple backup and restore tool for duplicity. It is intended to be used with a remote location with support for rsync. The configuration file is expected to be located at `~/.config/luback/config.yaml`. The file should look like this:
+
+```
+---
+log_path: /home/x/backup.log
+
+remote_user: the-user
+remote_host: example.com
+remote_basepath: /users/the-user/backups
+
+passphrase_command: "echo the-passphrase"
+
+targets:
+    # Personal documents
+    docs:
+        src: /home/x/docs
+        dst: docs
+
+    # Work stuff
+    docs:
+        src: /home/x/work
+        dst: work
+    
+    # ...
+```
 """
 
 import os
@@ -76,7 +100,7 @@ def backup(*targets, config_path=PATH_CONFIG_DEFAULT, verbose=False):
 
         print('Performing backup...', flush=True)
 
-        cmd = f'PASSPHRASE=$(secret-tool lookup strato enc) duplicity backup "{path_src}" "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
+        cmd = f'PASSPHRASE=$({config["passphrase_command"]}) duplicity backup "{path_src}" "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
         
         log_start = time.strftime('%Y-%m-%d.%H-%M-%S') + '  START: ' + cmd
         if log_path:
@@ -120,7 +144,7 @@ def restore(target, path_config=PATH_CONFIG_DEFAULT, verbose=False):
     path_src = config['targets'][target]['src']
     path_dst = config['targets'][target]['dst']
 
-    cmd = f'PASSPHRASE=$(secret-tool lookup strato enc) duplicity restore "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" "{path_src}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
+    cmd = f'PASSPHRASE=$({config["passphrase_command"]}) duplicity restore "rsync://{config["remote_user"]}@{config["remote_host"]}:{config["remote_basepath"]}/{path_dst}" "{path_src}" {DUPLICITY_OPTIONS}{" --verbosity 8" if verbose else ""}'
     print(cmd, flush=True)
     exit_status = os.system(cmd)
     assert (exit_status >> 8) == 0
