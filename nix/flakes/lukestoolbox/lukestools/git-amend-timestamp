@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Reset timestamp of the last commit to the current time
+
+GIT_COMMITTER_DATE="$(date +'%Y-%m-%d %H:%M:%S')"; git commit --amend --no-edit --date "$GIT_COMMITTER_DATE"

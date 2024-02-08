@@ -23,8 +23,10 @@ Most of the configuration is public in case it is of help to others. Nix and its
 
 ## Organization
 The configuration is split into two repos. See more details under "Usage".
+
 1. This repo. Contains the public components.
 2. Private repo. Contains the private components.
+
 How are those components kept separate but are automatically mergable nonetheless? Two short answers: a) Some components are Ansible roles (mergable by design) and some are hm-modules (mergable by design). b) Some config files even consist of public and private parts, and are concatenated at build-time (using Nix).
 
 ## Usage

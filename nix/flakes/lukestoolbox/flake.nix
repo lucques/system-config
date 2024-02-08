@@ -32,6 +32,7 @@
                 i3ipc   # bindings for i3 IPC
                 fire
                 pyyaml
+                pillow
             ];
         in
 

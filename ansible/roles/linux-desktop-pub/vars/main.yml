@@ -36,6 +36,7 @@ packages_apt:
   - libsecret-tools # for `secret-tool`
   - pulseaudio-utils
   - brightnessctl
+  - rclone
 
   # Drivers etc.
   - xserver-xorg-input-wacom  # for Wacom graphics tablet
@@ -47,6 +48,7 @@ packages_apt:
   - git
   - fzf
   - tldr
+  - ripgrep
 
   # LaTeX
   - texlive-full

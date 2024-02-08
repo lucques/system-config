@@ -60,7 +60,8 @@ The following system configuration has to be done manually.
     ```
 
 ### Brother HL-L2370DN printer
-- Install "Driver Install Tool" from Brother website, Version 19.08.2021 (2.2.3-1)
+- Install "Driver Install Tool" from Brother website, Version 19.08.2021 (2.2.3-1), file is `linux-brprinter-installer-2.2.3-1`
+- After cartridge change, may need to delete printer on CUPS (`http://localhost:631`) and run `linux-brprinter-installer-2.2.3-1` to install the printer again
 
 ### Install further software from external sources
 - VS Code
