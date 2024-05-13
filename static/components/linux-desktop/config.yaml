@@ -1,0 +1,4 @@
+---
+targets:
+  thunar: /home/luk/.config/Thunar
+  vscode-settings: /home/luk/.config/Code/User/settings.json

@@ -33,6 +33,10 @@
                 fire
                 pyyaml
                 pillow
+                faker
+                duckdb
+                openpyxl
+                xlsxwriter
             ];
         in
 

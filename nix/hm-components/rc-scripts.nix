@@ -4,6 +4,7 @@
             order = 1;
             content = ''
                 PATH="$HOME/bin:$PATH"
+                PATH="$HOME/.local/bin:$PATH"
                 PATH="/snap/bin:$PATH"
 
                 TERMINAL = "/usr/bin/gnome-terminal";

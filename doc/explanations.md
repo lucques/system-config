@@ -1,32 +1,14 @@
-# Automatic configuration
-Automatic configuration is entirely done with Ansible and Nix package manager + home-manager for now.
+# Explanations
+
+## Terminology
+- **config**: This is the name of a complete system with all corresponding tools, e.g. `t470p`.
+- **Activating a config**: When activating a config, e.g. `t470p`, then...  
+    - Restore static config of name `t470p` in both public and private repos
+    - Run Ansible playbook of name `t470p`
+    - Activate home manager config of name `t470p`
 
 
-## Setup
-1. Clone the following repositories to some location, say `~/repos`.
-    - `~/repos/system-config` (this repo)
-    - `~/repos/system-config-priv` (private repo)
-        - Optional, needed for activation via `--private`. See details further down.
-2. Install the automation tools Ansible and Nix + home-manager as instructed in [config_manual.md](config_manual.md).
-3. Go to `~/repos/system-config/bin`.
-    - There are three scripts
-        - `activate_config_ansible.py` is used to activate an Ansible playbook.
-        - `activate_config_hm.py` is used to activate an hm-config.
-        - `activate_config.py` is a shortcut to activate both.
-        - The flag `--private` requires the the locally cloned `system-config-priv` repo.
-    - Here are two representative examples with explanations.
-        - `activate_config.py t470p-pub-only`
-            - Activate the public config for my Thinkpad T470p
-            - This should work right out of the box, just by cloning this very repo.
-        - `activate_config.py t470p --private`
-            - Activate the public+private config for my Thinkpad T470p
-            - This option should only be available to me. 
-    - After running the `./bin/activate_config_hm.py` script, the `~/.nix-profile/bin` dir points to the installed software ("activated")
-
-
-## Explanations
-
-### Nixpkgs repository versions
+## Nixpkgs repository versions
 - Most derivations are from the nixpkgs repository.
 - The versions are declared as inputs of the machine config, each pointing to a specific commit.
 - All pinned inputs are declared in the `global-config` flake. Here the whole flake dependency DAG is tied together. Any hm-config just points to this `global-config` flake and follows its inputs.  
@@ -42,7 +24,7 @@ Automatic configuration is entirely done with Ansible and Nix package manager + 
     - ... but then get overriden in `global-config` to match the pinned versions.
 
 
-### Flake `lukestoolbox`
+## Flake `lukestoolbox`
 - `lukespylib`: Python package with common functions. 
 - `lukespython3`: Python interpreter
     - Contains `lukespylib` and some other modules.
@@ -56,7 +38,7 @@ Automatic configuration is entirely done with Ansible and Nix package manager + 
 - `lukestools-priv`: Same, but private
 
 
-### Startup scripts
+## Startup scripts
 - There are two main scripts:
     - `.shell-login-rc`: Run when logging in (set keyboard layout etc.). Sources and thereby extends `.shell-ordinary-rc`.
     - `.shell-ordinary-rc`: Run when starting a shell (add `~/bin` to `PATH` etc.)
@@ -66,3 +48,22 @@ Automatic configuration is entirely done with Ansible and Nix package manager + 
     - `.bashrc`: Runs `.shell-ordinary-rc`
     - `.profile`: Unclear when/whether executed. Keep for compatibility, runs `.shell-login-rc`.
     - `.xprofile`, `.xinitrc` never got executed
+
+
+## Static dotfiles
+- Every static dotfile config is stored in the `static/configs` dir as a YAML file, e.g. `t470p.yaml`, having the following structure:
+    ```
+    ---
+    components:
+    - component_a
+    - component_b
+    ```
+- Every component is a dir in the `static/components` dir, with a `files` subdir and a `config.yaml` of the following structure:
+    ```
+    ---
+    targets:
+        thunar: /home/luk/.config/Thunar
+        bashrc: /home/luk/.bashrc
+    ```
+- When storing, all files of a target get synchronized *to* the `files` dir.
+- When restoring, all files of a target get synchronized *from* the `files` dir. 

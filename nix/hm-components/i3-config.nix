@@ -151,10 +151,10 @@ in
                 bindsym ${mod}+F3            exec pactl list short sinks | awk '{print $1}' | xargs -I {} sh -c 'pactl set-sink-volume {} +5%'
 
                 # Screen brightness control
-                bindsym XF86MonBrightnessDown exec sudo brightnessctl s 20%-
-                bindsym ${mod}+F5             exec sudo brightnessctl s 20%-
-                bindsym XF86MonBrightnessUp   exec sudo brightnessctl s +20%
-                bindsym ${mod}+F6             exec sudo brightnessctl s +20%
+                bindsym XF86MonBrightnessDown exec brightnessctl s 20%-
+                bindsym ${mod}+F5             exec brightnessctl s 20%-
+                bindsym XF86MonBrightnessUp   exec brightnessctl s +20%
+                bindsym ${mod}+F6             exec brightnessctl s +20%
                 bindsym XF86Display           exec ${pkgs.lukestools}/bin/backlight-toggle
                 bindsym ${mod}+F7             exec ${pkgs.lukestools}/bin/backlight-toggle
 

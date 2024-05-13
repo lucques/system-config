@@ -5,8 +5,6 @@
     state: present
   become: yes
 
-
-
 - name: Install Snap packages
   ansible.builtin.snap:
     name: "{{ packages_snap }}"
@@ -19,11 +17,3 @@
     classic: yes
     state: present
   become: yes
-  
-
-
-- name: Copy Thunar data
-  ansible.builtin.copy:
-    src: Thunar
-    dest: "{{ ansible_env.HOME }}/.config/"
-    owner: "{{ ansible_user_id }}"
