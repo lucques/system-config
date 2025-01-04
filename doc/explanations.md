@@ -4,8 +4,8 @@
 - **config**: This is the name of a complete system with all corresponding tools, e.g. `t470p`.
 - **Activating a config**: When activating a config, e.g. `t470p`, then...  
     - Restore static config of name `t470p` in both public and private repos
-    - Run Ansible playbook of name `t470p`
     - Activate home manager config of name `t470p`
+    - Run Ansible playbook of name `t470p`
 
 
 ## Nixpkgs repository versions
@@ -51,14 +51,14 @@
 
 
 ## Static dotfiles
-- Every static dotfile config is stored in the `static/configs` dir as a YAML file, e.g. `t470p.yaml`, having the following structure:
+- Every static dotfile config is stored in the [../static/configs/](../static/configs/) dir as a YAML file, e.g. `t470p.yaml`, of the following structure:
     ```
     ---
     components:
     - component_a
     - component_b
     ```
-- Every component is a dir in the `static/components` dir, with a `files` subdir and a `config.yaml` of the following structure:
+- Every component is a dir in the [../static/components/](../static/components/) dir, with a `files` subdir and a `config.yaml` of the following structure:
     ```
     ---
     targets:
@@ -66,4 +66,4 @@
         bashrc: /home/luk/.bashrc
     ```
 - When storing, all files of a target get synchronized *to* the `files` dir.
-- When restoring, all files of a target get synchronized *from* the `files` dir. 
+- When restoring, all files of a target get synchronized *from* the `files` dir.

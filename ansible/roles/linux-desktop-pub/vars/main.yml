@@ -59,3 +59,16 @@ packages_snap:
   - pinta
   - skype
   - telegram-desktop
+
+vscode_extensions:
+  - bbenoist.nix
+  - bmewburn.vscode-intelephense-client
+  - github.copilot
+  - github.copilot-chat
+  - ms-python.debugpy
+  - ms-python.python
+  - ms-python.vscode-pylance
+  - rpinski.shebang-snippets
+  - dhall.dhall-lang
+  - dhall.vscode-dhall-lsp-server
+  - ms-azuretools.vscode-docker

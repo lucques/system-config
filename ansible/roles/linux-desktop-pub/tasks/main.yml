@@ -1,4 +1,29 @@
 ---
+
+############
+# Hardware #
+############
+
+# Logitech Mouse
+- name: Ensure the X11 configuration directory exists
+  ansible.builtin.file:
+    path: /etc/X11/xorg.conf.d
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Copy the static mouse acceleration config file
+  ansible.builtin.copy:
+    src: files/50-mouse-acceleration.conf
+    dest: /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
+    mode: '0644'
+  become: yes
+  
+
+############
+# Packages #
+############
+
 - name: Install APT packages
   ansible.builtin.apt:
     name: "{{ packages_apt }}"
@@ -17,3 +42,38 @@
     classic: yes
     state: present
   become: yes
+
+
+######################
+# Visual Studio Code #
+######################
+
+- name: Add Microsoft GPG key
+  ansible.builtin.apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: Add VSCode repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+    state: present
+  become: yes
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+  become: yes
+
+- name: Install VSCode
+  ansible.builtin.apt:
+    name: code
+    state: latest
+  become: yes
+
+- name: Install VSCode extensions
+  ansible.builtin.shell: |
+    for extension in {{ vscode_extensions | join(" ") }}; do
+      code --install-extension "$extension" || true
+    done
+  args:
+    executable: /bin/bash

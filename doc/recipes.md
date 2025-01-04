@@ -1,6 +1,6 @@
-# General: Restore
+# Recipes
 
-The following recipes are are generally applicable.
+The following recipes are generally applicable.
 
 
 ## Install Debian
@@ -34,10 +34,10 @@ The following recipes are are generally applicable.
         - Optional, needed for activation via `--private`. See details further down.
 2. Go to `~/repos/system-config/bin`.
     - There is one script `system_config.py` with three commands.
-        - `restore` is used to restore static dotfiles.
         - `store` is used to store static dotfiles.
-        - `activate_ansible` is used to activate an Ansible playbook.
+        - `restore` is used to restore static dotfiles.
         - `activate_hm` is used to activate an hm-config.
+        - `run_ansible` is used to run an Ansible playbook.
         - `activate` is a shortcut to activate all three.
         - The flag `--private` requires the locally cloned `system-config-priv` repo.
     - Here are two representative examples with explanations.
@@ -94,12 +94,11 @@ The following recipes are are generally applicable.
 
 
 ## Install further software from external sources
-- VS Code
 - Signal Messenger
 - Threema
 - Google Chrome
 - Dropbox
-- Docker
+- Docker (add group "docker" to user)
 - Xournal++
 - Veracrypt
 - Node.js

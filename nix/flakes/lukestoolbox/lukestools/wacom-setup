@@ -1,0 +1,13 @@
+#!/usr/bin/env lukespython3
+
+import os
+
+os.system('xsetwacom --set "Wacom Intuos S Pen eraser" MapToOutput DP-3-2')
+os.system('xsetwacom --set "Wacom Intuos S Pen stylus" MapToOutput DP-3-2')
+os.system('xsetwacom --set "Wacom Intuos S Pen cursor" MapToOutput DP-3-2')
+os.system('xsetwacom --set "Wacom Intuos S Pad pad" MapToOutput DP-3-2')
+
+# os.system('xsetwacom --set "Wacom Intuos S Pad pad" button 1 "key ctrl shift d"')
+# os.system('xsetwacom --set "Wacom Intuos S Pad pad" button 2 "key ctrl z"')
+# os.system('xsetwacom --set "Wacom Intuos S Pad pad" button 3 "key ctrl 6"')
+# os.system('xsetwacom --set "Wacom Intuos S Pad pad" button 8 "key ctrl shift c"')

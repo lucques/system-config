@@ -1,4 +1,6 @@
 ---
 targets:
+  xresources: /home/luk/.Xresources # Mouse pointer config
   thunar: /home/luk/.config/Thunar
   vscode-settings: /home/luk/.config/Code/User/settings.json
+  vscode-keybindings: /home/luk/.config/Code/User/keybindings.json

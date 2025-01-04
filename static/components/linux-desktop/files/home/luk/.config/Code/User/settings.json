@@ -1,6 +1,208 @@
 {
-    "workbench.colorTheme": "Visual Studio Dark",
-    "git.confirmSync": false,
+    "editor.wordWrap": "on",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk 🔃",
+            "tools": [
+                "latexmk"
+            ]
+        },
+        {
+            "name": "latexmk (latexmkrc)",
+            "tools": [
+                "latexmk_rconly"
+            ]
+        },
+        {
+            "name": "latexmk (lualatex)",
+            "tools": [
+                "lualatexmk"
+            ]
+        },
+        {
+            "name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "Compile Rnw files",
+            "tools": [
+                "rnw2tex",
+                "latexmk"
+            ]
+        },
+        {
+            "name": "Compile Jnw files",
+            "tools": [
+                "jnw2tex",
+                "latexmk"
+            ]
+        },
+        {
+            "name": "tectonic",
+            "tools": [
+                "tectonic"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "-shell-escape",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "lualatexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "latexmk_rconly",
+            "command": "latexmk",
+            "args": [
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "rnw2tex",
+            "command": "Rscript",
+            "args": [
+                "-e",
+                "knitr::opts_knit$set(concordance = TRUE); knitr::knit('%DOCFILE_EXT%')"
+            ],
+            "env": {}
+        },
+        {
+            "name": "jnw2tex",
+            "command": "julia",
+            "args": [
+                "-e",
+                "using Weave; weave(\"%DOC_EXT%\", doctype=\"tex\")"
+            ],
+            "env": {}
+        },
+        {
+            "name": "jnw2texmintex",
+            "command": "julia",
+            "args": [
+                "-e",
+                "using Weave; weave(\"%DOC_EXT%\", doctype=\"texminted\")"
+            ],
+            "env": {}
+        },
+        {
+            "name": "tectonic",
+            "command": "tectonic",
+            "args": [
+                "--synctex",
+                "--keep-logs",
+                "%DOC%.tex"
+            ],
+            "env": {}
+        }
+    ],
+    "latex-workshop.latex.autoBuild.run": "never",
+    "python.pythonPath": "/bin/python3",
     "editor.mouseWheelZoom": true,
-    "editor.wordWrap": "on"
+    "php.suggest.basic": false,
+    "php.validate.enable": false,
+    "php.validate.executablePath": "",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "python.defaultInterpreterPath": "/bin/python3",
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "git.confirmSync": false,
+    "haskell.manageHLS": "GHCup",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "workbench.startupEditor": "none",
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": false,
+        "yaml": false,
+        "html": true
+    },
+    "editor.minimap.showSlider": "always",
+    "editor.rulers": [
+        80, 120
+    ],
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "editor.inlineSuggest.showToolbar": "always",
+    "editor.accessibilitySupport": "off",
+    "github.copilot.advanced": {},
+    "window.zoomLevel": 1,
+    "accessibility.voice.speechLanguage": "de-DE",
+    "github.copilot.editor.enableAutoCompletions": true,
+    "workbench.colorTheme": "Default Dark+",
+    "markdown-everywhere.customized-rules": [
+        "defaultRules",
+        {
+            "name": "number-sign-equals",
+            "beginRegExp": "<\\? md_start\\(\\); \\?>",
+            "endRegExp": "<\\? md_end\\(\\); \\?>",
+            "example": "#= [markdown]<br># title<br>content<br>=#",
+            "languages": [
+                { "name": "php", "source": "text.html.php" }
+            ]
+        }
+    ],
+    "files.associations": {
+        "*.php": "php"
+    },
+    "editor.unicodeHighlight.nonBasicASCII": false,
 }
