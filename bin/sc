@@ -7,6 +7,7 @@ from pathlib import Path
 
 import yaml
 
+
 class SystemConfig:
 
     ######################
@@ -99,21 +100,22 @@ class SystemConfig:
             else:
                 print(f'  Storing targets...')
 
-            for target, path in config['targets'].items():
+            for target, paths in config['targets'].items():
                 if not targets or target in targets:
-                    path = Path(path)
-                    backup_path_target = (path_component_files / path.relative_to(path.anchor)).parent
-                    os.system(f'mkdir -p {backup_path_target}')
-                    cmd = f'rsync -a --delete {path} {backup_path_target}'
-                    if verbose:
-                        print(f'  - {target}')
-                        print(f'    - from: {path}')
-                        print(f'    - to:   {backup_path_target}')
-                        print(f'    - cmd:  {cmd}')
-                    else:
-                        print(f'  - {target}')
+                    for path in paths:
+                        path = Path(path)
+                        backup_path_target = (path_component_files / path.relative_to(path.anchor)).parent
+                        os.system(f'mkdir -p {backup_path_target}')
+                        cmd = f'rsync -a --delete {path} {backup_path_target}'
+                        if verbose:
+                            print(f'  - {target}')
+                            print(f'    - from: {path}')
+                            print(f'    - to:   {backup_path_target}')
+                            print(f'    - cmd:  {cmd}')
+                        else:
+                            print(f'  - {target}')
 
-                    os.system(cmd)
+                        os.system(cmd)
 
 
     ########################
@@ -206,25 +208,26 @@ class SystemConfig:
             else:
                 print(f'  Restoring targets...')
 
-            for target, path in config['targets'].items():
+            for target, paths in config['targets'].items():
                 if not targets or target in targets:
-                    path = Path(path)
-                    backup_path_target = Path(path_component_files) / path.relative_to(path.anchor)
-                    path_to = path.parent
-                    os.system(f'mkdir -p {path_to}')
-                    cmd = f'rsync -a --delete {backup_path_target} {path_to}'
-                    if verbose:
-                        print(f'  - {target}')
-                        print(f'    - from: {backup_path_target}')
-                        print(f'    - to:   {path_to}')
-                        print(f'    - cmd:  {cmd}')
-                    else:
-                        print(f'  - {target}')
-                    os.system(cmd)
+                    for path in paths:
+                        path = Path(path)
+                        backup_path_target = Path(path_component_files) / path.relative_to(path.anchor)
+                        path_to = path.parent
+                        os.system(f'mkdir -p {path_to}')
+                        cmd = f'rsync -a --delete {backup_path_target} {path_to}'
+                        if verbose:
+                            print(f'  - {target}')
+                            print(f'    - from: {backup_path_target}')
+                            print(f'    - to:   {path_to}')
+                            print(f'    - cmd:  {cmd}')
+                        else:
+                            print(f'  - {target}')
+                        os.system(cmd)
 
 
     ################################
-    # Activate Home Mangaer config #
+    # Activate Home Manager config #
     ################################
 
     @staticmethod

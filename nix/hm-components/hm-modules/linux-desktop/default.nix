@@ -18,6 +18,9 @@
         pandoc
 
 
+        # Python apps
+        copier
+
         # Nodejs
         # nodePackages.node2nix
 

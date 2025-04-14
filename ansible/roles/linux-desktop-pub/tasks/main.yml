@@ -43,6 +43,13 @@
     state: present
   become: yes
 
+- name: Install sqlitebrowser package
+  ansible.builtin.snap:
+    name: "sqlitebrowser"
+    classic: yes
+    state: present
+  become: yes
+
 
 ######################
 # Visual Studio Code #

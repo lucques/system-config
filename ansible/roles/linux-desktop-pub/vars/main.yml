@@ -22,6 +22,9 @@ packages_apt:
   - gedit
   - gscan2pdf
   - keepassxc
+  - qpdf
+  - gthumb
+  - peek
 
   # Graphics
   - gimp
@@ -42,6 +45,12 @@ packages_apt:
   # Drivers etc.
   - xserver-xorg-input-wacom  # for Wacom graphics tablet
 
+  # Runtimes etc.
+  - default-jre  # Java
+  - default-jdk  # Java
+  - python3
+  - pipx
+
   # Terminal tools
   - zsh
   - cookiecutter
@@ -54,11 +63,15 @@ packages_apt:
   # LaTeX
   - texlive-full
 
+  # Software engineering
+  - dia  # for UML diagrams
+
 packages_snap:
   - spotify
   - pinta
   - skype
   - telegram-desktop
+  # - sqlitebrowser
 
 vscode_extensions:
   - bbenoist.nix

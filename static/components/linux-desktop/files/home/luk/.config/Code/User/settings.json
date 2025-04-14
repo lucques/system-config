@@ -205,4 +205,6 @@
         "*.php": "php"
     },
     "editor.unicodeHighlight.nonBasicASCII": false,
+    "redhat.telemetry.enabled": false,
+    "editor.minimap.renderCharacters": false,
 }

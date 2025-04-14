@@ -33,7 +33,7 @@ The following recipes are generally applicable.
     - `~/repos/system-config-priv` (private repo)
         - Optional, needed for activation via `--private`. See details further down.
 2. Go to `~/repos/system-config/bin`.
-    - There is one script `system_config.py` with three commands.
+    - There is one script `sc` (stands for "system config") that offers the following commands.
         - `store` is used to store static dotfiles.
         - `restore` is used to restore static dotfiles.
         - `activate_hm` is used to activate an hm-config.
@@ -41,10 +41,10 @@ The following recipes are generally applicable.
         - `activate` is a shortcut to activate all three.
         - The flag `--private` requires the locally cloned `system-config-priv` repo.
     - Here are two representative examples with explanations.
-        - `system_config.py activate t470p-pub-only`
+        - `sc activate t470p-pub-only`
             - Activate the public config for my Thinkpad T470p
             - This should work right out of the box, just by cloning this very repo.
-        - `system_config.py activate t470p --private`
+        - `sc activate t470p --private`
             - Activate the public+private config for my Thinkpad T470p
             - This option should only be available to me. 
     - After running the hm config, the `~/.nix-profile/bin` dir points to the installed software ("activated")
@@ -89,7 +89,29 @@ The following recipes are generally applicable.
 
 
 ## Configure Brother HL-L2370DN printer
-- Install "Driver Install Tool" from Brother website, Version 19.08.2021 (2.2.3-1), file is `linux-brprinter-installer-2.2.3-1`
+- Install "Driver Install Tool" from Brother website, Version 19.08.2021 (2.2.3-1), file is `linux-brprinter-installer-2.2.3-1` (archived in private repo under `ext` dir)
+    - Model: `HL-L2370DN`
+    - Question asked:
+        ```
+        Will you specify the Device URI? [Y/n] ->Y
+        0: beh
+        1: serial:/dev/ttyS0?baud=115200
+        2: cups-brf:/
+        3: ipps
+        4: https
+        5: lpd
+        6: ipp
+        7: http
+        8: socket
+        9: smb
+        10: dnssd://Brother%20HL-L2370DN%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-b422000698ba
+        11: ipp://Brother%20HL-L2370DN%20series._ipp._tcp.local/
+        12: lpd://o2.box2000698BA/BINARY_P1
+        13 (I): Specify IP address.
+        14 (A): Auto. (dnssd://Brother%20HL-L2370DN%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-b422000698ba)
+        select the number of destination Device URI. ->14
+        lpadmin -p HLL2370DN -v dnssd://Brother%20HL-L2370DN%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-b422000698ba -E
+        ```
 - After cartridge change, may need to delete printer on CUPS (`http://localhost:631`) and run `linux-brprinter-installer-2.2.3-1` to install the printer again
 
 
@@ -102,3 +124,4 @@ The following recipes are generally applicable.
 - Xournal++
 - Veracrypt
 - Node.js
+- BlueJ

@@ -1,6 +1,17 @@
 ---
 targets:
-  xresources: /home/luk/.Xresources # Mouse pointer config
-  thunar: /home/luk/.config/Thunar
-  vscode-settings: /home/luk/.config/Code/User/settings.json
-  vscode-keybindings: /home/luk/.config/Code/User/keybindings.json
+  xresources:
+    - /home/luk/.Xresources # Mouse pointer config
+  thunar:
+    - /home/luk/.config/Thunar
+  vscode-settings:
+    - /home/luk/.config/Code/User/settings.json
+  vscode-keybindings:
+    - /home/luk/.config/Code/User/keybindings.json
+  copier-templates-pub:
+    - /home/luk/.copier-templates-pub
+  thunar-templates:
+    - /home/luk/Templates/16-9.xopp
+    - /home/luk/Templates/a4.xopp
+    - /home/luk/Templates/calc.ods
+    - /home/luk/Templates/script.sh

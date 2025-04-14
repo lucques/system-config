@@ -7,8 +7,8 @@ import yaml
 from pathlib import Path
 
 
-PATH_CONFIG_DEFAULT  = '~/.config/luback/config.yaml'
-DUPLICITY_OPTIONS    = '--rsync-options=\"--recursive --links --times --devices --specials --verbose --rsh ssh\"'
+PATH_CONFIG_DEFAULT = '~/.config/luback/config.yaml'
+DUPLICITY_OPTIONS   = '--rsync-options=\"--recursive --links --times --devices --specials --verbose --rsh ssh\"'
 
 
 class Luback:
@@ -36,7 +36,7 @@ class Luback:
             dst: docs
 
         # Work stuff
-        docs:
+        work:
             src: /home/x/work
             dst: work
         
@@ -52,7 +52,7 @@ class Luback:
     @staticmethod
     def backup(*targets, config_path=PATH_CONFIG_DEFAULT, verbose=False):
         """
-        Save targets to a remote location.
+        Backup targets to a remote location.
         """
 
         ####################
@@ -80,6 +80,24 @@ class Luback:
             path_dst = config['targets'][target]['dst']
 
 
+            ########################
+            # Set up the ssh-agent #
+            ########################
+            
+            # The ssh-agent must be running and the right keys must be loaded.
+            # To achieve this, the `sftp` will launch an interactive password
+            # prompt in the shell. Therefore before running `sftp -b` (batch
+            # mode), we run `sftp` in interactive mode to prime the ssh-agent.
+            # Kind of hacky, but it works.
+
+            print('Priming ssh-agent...', flush=True)
+
+            cmd = f'echo "exit" | sftp {config["remote_sftp_user"]}@{config["remote_sftp_host"]}'
+            assert(os.system(cmd) >> 8) == 0, "Failed to connect via SFTP in order to prime the ssh-agent"
+
+            print(flush=True)
+
+
             #########################
             # Create dirs on remote #
             #########################
@@ -97,7 +115,6 @@ class Luback:
             print(cmd)
             exit_status = os.system(cmd)
             assert (exit_status >> 8) == 0
-
 
             print(flush=True)
 

@@ -126,7 +126,7 @@
                         src = ./lukestools;
                         installPhase = ''
                             mkdir -p $out/bin
-                            cp $src/* $out/bin
+                            cp -r $src/* $out/bin
                         '';
                     };
 

@@ -1,0 +1,45 @@
+#!/usr/bin/env lukespython3
+
+import os
+import fire
+from pathlib import Path
+
+
+class TuCreate:
+    """
+    Simple tool to create a new daily exercise file ("Taegliche Uebung").
+    """
+
+    @staticmethod
+    def create():
+        """
+        Create `t_ue.xopp` file
+        """
+
+        path_source = Path.home() / '.copier-templates-pub' / 't_ue'
+        path_target = Path(os.getcwd())
+
+        os.system(f'copier copy {path_source} {path_target}')
+
+
+    @staticmethod
+    def export():
+        """
+        Export `t_ue.png` and `t_ue_loesung.pdf` files
+        """
+
+        path_target = Path(os.getcwd())
+
+        path_xopp = path_target / 't_ue.xopp'
+        assert path_xopp.exists(), f'File not found: {path_xopp}'
+
+        os.system(f'xournalpp --create-img=t_ue.png --export-range=1 {path_xopp}')
+        os.system(f'xournalpp --create-pdf=t_ue_loesung.pdf --export-range=2 {path_xopp}')
+
+
+########
+# Main #
+########
+    
+if __name__ == '__main__':
+    fire.Fire(TuCreate)
